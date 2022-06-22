@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Post;
 use Illuminate\Http\Request;
-
+use DataTables;
 class PostController extends Controller
 {
     /**
@@ -14,10 +14,27 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::all();
-        return view('posts.index',compact('posts'));
+        // $posts = Post::all();
+        return view('posts.index');
     }
 
+    public function ajaxLoadPostTable(Request $reqeust)
+    {
+        $posts = Post::with('user');
+
+        return Datatables::of($posts)
+        ->addIndexColumn()
+        ->addColumn('name',function(Post $post){
+            return $post->user->name;
+        })
+        ->addColumn('bil',function(Post $post){
+            return 'bil';
+        })
+        ->addColumn('action',function(Post $post){
+            return 'action';
+        })
+        ->make(true);
+    }
     /**
      * Show the form for creating a new resource.
      *

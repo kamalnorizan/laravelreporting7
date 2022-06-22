@@ -22,3 +22,4 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/post', 'PostController@index')->name('post.index');
+Route::post('/post/ajaxLoadPostTable', 'PostController@ajaxLoadPostTable')->name('post.ajaxLoadPostTable');

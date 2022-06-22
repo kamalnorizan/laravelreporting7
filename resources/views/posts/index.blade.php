@@ -11,7 +11,7 @@
                    <table id="poststbl" class="table">
                     <thead>
                         <tr>
-                            <th>#</th>
+                            <th>Bil</th>
                             <th>Title</th>
                             <th>Author</th>
                             <th>Date</th>
@@ -19,7 +19,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($posts as $key => $post)
+                        {{-- @foreach ($posts as $key => $post)
                         <tr>
                             <td>{{$key+1}}</td>
                             <td>{{$post->title}}</td>
@@ -27,7 +27,7 @@
                             <td>{{$post->created_at}}</td>
                             <td>Tindakan</td>
                         </tr>
-                        @endforeach
+                        @endforeach --}}
                     </tbody>
                    </table>
                 </div>
@@ -35,5 +35,29 @@
         </div>
     </div>
 </div>
+@endsection
+@section('script')
+<script>
+    $('#poststbl').DataTable({
+        'order': [[3,'desc']],
+        'processing': true,
+        'serverSide': true,
+        'ajax':{
+            'url': "{{route('post.ajaxLoadPostTable')}}",
+            'method': 'post',
+            'dataType': 'json',
+            "data":{ _token: "{{csrf_token()}}"}
+        },
+        'columns': [
+            {"data":'bil'},
+            {"data":'title'},
+            {"data":'name'},
+            {"data":'created_at'},
+            {"data":'action'}
+        ]
+    });
+
+
+</script>
 @endsection
 
