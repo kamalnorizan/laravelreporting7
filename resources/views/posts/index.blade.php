@@ -3,12 +3,12 @@
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-8">
+        <div class="col-md-12">
             <div class="card">
                 <div class="card-header">Senarai Post</div>
 
                 <div class="card-body">
-                   <table id="poststbl">
+                   <table id="poststbl" class="table">
                     <thead>
                         <tr>
                             <th>#</th>
