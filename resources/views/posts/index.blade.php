@@ -66,6 +66,25 @@
         $('#dataid').html(id);
     });
 
+
+    // $('#poststbl').DataTable({
+    //     "processing": true,
+    //     "serverSide": true,
+    //     "ajax":{
+    //       "url": "{{ route('post.ajaxLoadPostTable') }}",
+    //       "dataType": "json",
+    //       "method": "post",
+    //       "data":{ _token: "{{csrf_token()}}"}
+    //     },
+    //     "columns": [
+    //       { "bil": "bil" },
+    //       { "title": "title" },
+    //       { "author": "author" },
+    //       { "created_at": "created_at" },
+    //       { "action": "action" }
+    //     ]
+    // });
+
     $('#poststbl').DataTable({
         'order': [[3,'desc']],
         'processing': true,
@@ -80,10 +99,11 @@
             {"data":'bil',
                 'render': function(data,type,row,meta){
                     return meta.row+meta.settings._iDisplayStart + 1;
-                }
+                },
+                'searchable':false
             },
             {"data":'title'},
-            {"data":'name'},
+            {"data":'name', 'name': 'user.name'},
             {"data":'created_at'},
             {"data":'action'}
         ]
