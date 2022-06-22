@@ -35,9 +35,37 @@
         </div>
     </div>
 </div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="updatePostMdl" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Update post</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+            </div>
+            <div class="modal-body">
+                <span id="dataid"></span>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 @section('script')
 <script>
+    $('#updatePostMdl').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget);
+        var id = button.data('id');
+        $('#dataid').html(id);
+    });
+
     $('#poststbl').DataTable({
         'order': [[3,'desc']],
         'processing': true,
@@ -49,7 +77,11 @@
             "data":{ _token: "{{csrf_token()}}"}
         },
         'columns': [
-            {"data":'bil'},
+            {"data":'bil',
+                'render': function(data,type,row,meta){
+                    return meta.row+meta.settings._iDisplayStart + 1;
+                }
+            },
             {"data":'title'},
             {"data":'name'},
             {"data":'created_at'},

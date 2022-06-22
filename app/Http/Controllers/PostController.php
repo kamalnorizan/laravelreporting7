@@ -27,11 +27,13 @@ class PostController extends Controller
         ->addColumn('name',function(Post $post){
             return $post->user->name;
         })
-        ->addColumn('bil',function(Post $post){
-            return 'bil';
-        })
+        // ->addColumn('bil',function(Post $post){
+        //     return 'bil';
+        // })
         ->addColumn('action',function(Post $post){
-            return 'action';
+            $button = "<button type='button' class='btn btn-sm btn-warning'  data-toggle='modal' data-id='".$post->id."' data-target='#updatePostMdl'>Update</button> ";
+            $button .= "<button type='button' class='btn btn-sm btn-primary'>Show</button>";
+            return $button;
         })
         ->make(true);
     }
