@@ -7,7 +7,9 @@
             <div class="card">
                 <div class="card-header">Senarai Post <button type="button" class="btn btn-primary btn-sm float-right" data-toggle="modal" data-target="#createPostMdl">
                     Create Post
-                  </button></div>
+                  </button> <button type="button" id="refreshTable" class="btn btn-info btn-sm float-right" >
+                    Refresh
+                  </button> </div>
 
                 <div class="card-body">
                    <table id="poststbl" class="table">
@@ -124,7 +126,7 @@
         'columns': [
             {"data":'bil',
                 'render': function(data,type,row,meta){
-                    return meta.row+meta.settings._iDisplayStart + 1;
+                    return '<button type="button" class="button showid2">'+meta.row+meta.settings._iDisplayStart + 1+'</button>';
                 },
                 'searchable':false
             },
@@ -136,6 +138,11 @@
             {"data":'featured'},
             {"data":'action'}
         ]
+    });
+
+    $('#refreshTable').click(function (e) {
+        e.preventDefault();
+        poststbl.ajax.reload();
     });
 
     $('#updatePostMdl').on('show.bs.modal', function (event) {
@@ -163,13 +170,24 @@
             dataType: "json",
             success: function (response) {
                 if($.isEmptyObject(response.error)){
-
                     $('.errorTxt').empty();
                     $('#errorDiv').addClass('d-none');
                     $('#createForm').get(0).reset();
                     $('#createPostMdl').modal('hide');
                     poststbl.ajax.reload();
                     $('.modal-backdrop').remove();
+                    swal("Post telah berjaya direkodkan",{
+                        icon:'success',
+                        buttons: {
+                            cancel: {
+                                text: "OK",
+                                value: null,
+                                visible: true,
+                                className: "",
+                                closeModal: true,
+                            }
+                        }
+                    });
                 }else{
                     $('.errorTxt').empty();
                     $('#errorMessages').empty();
@@ -185,8 +203,14 @@
         });
     });
 
+    $('.showid2').click(function (e) {
+        e.preventDefault();
+        alert('test');
+    });
 
-
+    $(document).on('click','.showid',function(e){
+        alert($(this).attr('data-id'));
+    });
 
 </script>
 @endsection

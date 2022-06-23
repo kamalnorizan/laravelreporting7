@@ -53,7 +53,9 @@ class PostController extends Controller
         })
         ->addColumn('action',function(Post $post){
             $button = "<button type='button' class='btn btn-sm btn-warning'  data-toggle='modal' data-id='".$post->id."' data-target='#updatePostMdl'>Update</button> ";
-            $button .= "<button type='button' class='btn btn-sm btn-primary'>Show</button>";
+
+            $button .= "<button type='button' class='btn btn-sm btn-primary showid'  data-id='".$post->id."'>Show</button>";
+
             return $button;
         })
         ->rawColumns(['comment','action'])
