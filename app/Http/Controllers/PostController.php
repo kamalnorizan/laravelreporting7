@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use DataTables;
 use DB;
 use Carbon\Carbon;
+use Validator;
+use Auth;
 class PostController extends Controller
 {
     /**
@@ -21,7 +23,7 @@ class PostController extends Controller
 
     public function ajaxLoadPostTableEL(Request $reqeust)
     {
-        $posts = Post::with('user','comments');
+        $posts = Post::with('user','comments')->orderBy('created_at','desc');
 
         return Datatables::of($posts)
         ->addIndexColumn()
@@ -112,7 +114,26 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        return response()->json($request);
+        $validator = Validator::make($request->all(),[
+            'title' => 'required|max:255',
+            'content' => 'required',
+            'featured' => 'required',
+            'published' => 'required'
+        ]);
+
+        if($validator->passes()){
+            $post = new Post;
+            $post->title=$request->title;
+            $post->content=$request->content;
+            $post->featured=$request->featured;
+            $post->published=$request->published;
+            $post->user_id=Auth::user()->id;
+            $post->save();
+            return response()->json($request);
+        }else{
+            return response()->json(['error'=>$validator->errors()->all()]);
+        }
+
     }
 
     /**

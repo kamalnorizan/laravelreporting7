@@ -44,6 +44,15 @@
                     </button>
             </div>
             <div class="modal-body">
+                <div id="errorDiv" class="alert alert-danger d-none" role="alert">
+                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                  <strong>Error!</strong><br>
+                  <span id="errorMessages">
+
+                  </span>
+                </div>
                 <form id="createForm">
                     <div class="form-group">
                       <label for="title">Title</label>
@@ -101,36 +110,7 @@
 @endsection
 @section('script')
 <script>
-    $('#updatePostMdl').on('show.bs.modal', function (event) {
-        var button = $(event.relatedTarget);
-        var id = button.data('id');
-        $('#dataid').html(id);
-    });
-
-    $('#postSubmitBtn').click(function (e) {
-        e.preventDefault();
-        var published = '0';
-        if($('#published').prop('checked')==true){
-            published = '1';
-        }
-        $.ajax({
-            type: "post",
-            url: "{{route('post.store')}}",
-            data: {
-                _token: '{{ csrf_token() }}',
-                'title': $('#title').val(),
-                'content': $('#content').val(),
-                'featured': $('#featured').val(),
-                'published': published,
-            },
-            dataType: "json",
-            success: function (response) {
-
-            }
-        });
-    });
-
-    $('#poststbl').DataTable({
+    var poststbl = $('#poststbl').DataTable({
         'order': [[3,'desc']],
         'processing': true,
         'serverSide': true,
@@ -156,6 +136,50 @@
             {"data":'action'}
         ]
     });
+
+    $('#updatePostMdl').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget);
+        var id = button.data('id');
+        $('#dataid').html(id);
+    });
+
+    $('#postSubmitBtn').click(function (e) {
+        e.preventDefault();
+        var published = '0';
+        if($('#published').prop('checked')==true){
+            published = '1';
+        }
+        $.ajax({
+            type: "post",
+            url: "{{route('post.store')}}",
+            data: {
+                _token: '{{ csrf_token() }}',
+                'title': $('#title').val(),
+                'content': $('#content').val(),
+                'featured': $('#featured').val(),
+                'published': published,
+            },
+            dataType: "json",
+            success: function (response) {
+                if($.isEmptyObject(response.error)){
+
+                    $('#errorDiv').addClass('d-none');
+                    $('#createForm').get(0).reset();
+                    $('#createPostMdl').modal('hide');
+                    poststbl.ajax.reload();
+                    $('.modal-backdrop').remove();
+                }else{
+                    $.each(response.error, function (indexInArray, message) {
+                        $('#errorMessages').append(message+'<br>');
+                    });
+                    $('#errorDiv').removeClass('d-none');
+                    // console.log(response.error);
+                }
+            }
+        });
+    });
+
+
 
 
 </script>
