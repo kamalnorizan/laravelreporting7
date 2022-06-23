@@ -24,15 +24,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {{-- @foreach ($posts as $key => $post)
-                        <tr>
-                            <td>{{$key+1}}</td>
-                            <td>{{$post->title}}</td>
-                            <td>{{$post->user->name}}</td>
-                            <td>{{$post->created_at}}</td>
-                            <td>Tindakan</td>
-                        </tr>
-                        @endforeach --}}
+
                     </tbody>
                    </table>
 
@@ -79,7 +71,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save</button>
+                <button type="button" id="postSubmitBtn" class="btn btn-primary">Save</button>
             </div>
         </div>
     </div>
@@ -113,6 +105,29 @@
         var button = $(event.relatedTarget);
         var id = button.data('id');
         $('#dataid').html(id);
+    });
+
+    $('#postSubmitBtn').click(function (e) {
+        e.preventDefault();
+        var published = '0';
+        if($('#published').prop('checked')==true){
+            published = '1';
+        }
+        $.ajax({
+            type: "post",
+            url: "{{route('post.store')}}",
+            data: {
+                _token: '{{ csrf_token() }}',
+                'title': $('#title').val(),
+                'content': $('#content').val(),
+                'featured': $('#featured').val(),
+                'published': published,
+            },
+            dataType: "json",
+            success: function (response) {
+
+            }
+        });
     });
 
     $('#poststbl').DataTable({

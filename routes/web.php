@@ -27,3 +27,4 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/post', 'PostController@index')->name('post.index');
 Route::post('/post/ajaxLoadPostTable', 'PostController@ajaxLoadPostTableEL')->name('post.ajaxLoadPostTable');
+Route::post('/post/store', 'PostController@store')->name('post.store');
