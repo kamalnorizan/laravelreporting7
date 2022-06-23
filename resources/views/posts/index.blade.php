@@ -39,6 +39,54 @@
         </div>
     </div>
 </div>
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#createPostMdl">
+  Create Post
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="createPostMdl" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Create New Post</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+            </div>
+            <div class="modal-body">
+                <form id="createForm">
+                    <div class="form-group">
+                      <label for="title">Title</label>
+                      <input type="text" class="form-control" name="title" id="title" aria-describedby="helpId" placeholder="">
+                      <small id="helpId" class="form-text text-muted"></small>
+                    </div>
+                    <div class="form-group">
+                      <label for="content">Content</label>
+                      <textarea class="form-control" name="content" id="content" rows="3"></textarea>
+                    </div>
+                    <div class="form-group">
+                      <label for="featured">Featured?</label>
+                      <select class="form-control" name="featured" id="featured">
+                        <option value="1">Yes</option>
+                        <option value="0">No</option>
+                      </select>
+                    </div>
+                    <div class="form-check">
+                      <label class="form-check-label">
+                        <input type="checkbox" class="form-check-input" name="published" id="published" value="1" checked>
+                        Published?
+                      </label>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 <!-- Modal -->
