@@ -5,7 +5,9 @@
     <div class="row justify-content-center">
         <div class="col-md-12">
             <div class="card">
-                <div class="card-header">Senarai Post</div>
+                <div class="card-header">Senarai Post <button type="button" class="btn btn-primary btn-sm float-right" data-toggle="modal" data-target="#createPostMdl">
+                    Create Post
+                  </button></div>
 
                 <div class="card-body">
                    <table id="poststbl" class="table">
@@ -39,12 +41,7 @@
         </div>
     </div>
 </div>
-<!-- Button trigger modal -->
-<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#createPostMdl">
-  Create Post
-</button>
 
-<!-- Modal -->
 <div class="modal fade" id="createPostMdl" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
