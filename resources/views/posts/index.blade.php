@@ -11,12 +11,13 @@
                    <table id="poststbl" class="table">
                     <thead>
                         <tr>
-                            <th width="15%">Bil</th>
-                            <th width="15%">Title</th>
+                            <th {{-- width="15%" --}}>Bil</th>
+                             <th {{-- width="15%" --}}>Title</th>
                             <th>Comment</th>
                             <th>Calculate</th>
                             <th>Author</th>
                             <th>Date</th>
+                            <th>Featured</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -88,9 +89,10 @@
             },
             {"data":'title'},
             {"data":'comment','searchable':false},
-            {"data":'calculate','searchable':false},
-            {"data":'name', 'name': 'users.name'},
+            {"data":'calculate','searchable':false, 'sortable': false},
+            {"data":'name', 'name': 'user.name'},
             {"data":'created_at'},
+            {"data":'featured'},
             {"data":'action'}
         ]
     });

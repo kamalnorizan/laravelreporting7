@@ -6,6 +6,7 @@ use App\Post;
 use Illuminate\Http\Request;
 use DataTables;
 use DB;
+use Carbon\Carbon;
 class PostController extends Controller
 {
     /**
@@ -20,14 +21,20 @@ class PostController extends Controller
 
     public function ajaxLoadPostTableEL(Request $reqeust)
     {
-        $posts = Post::with('user');
+        $posts = Post::with('user','comments');
 
         return Datatables::of($posts)
         ->addIndexColumn()
+        ->addColumn('created_at',function(Post $post){
+            return Carbon::parse($post->created_at)->format('d-m-Y');
+        })
         ->addColumn('name',function(Post $post){
             return $post->user->name;
         })
-        ->addColumn('comment',function($post){
+        ->addColumn('featured',function(Post $post){
+            return $post->featured;
+        })
+        ->addColumn('comment',function(Post $post){
             $commentRow = '';
             foreach ($post->comments as $key => $comment) {
                 $commentRow.='<option >'.$comment->content.'</option>';
@@ -39,7 +46,7 @@ class PostController extends Controller
             $columnComment .='</div>';
             return  $columnComment;
         })
-        ->addColumn('calculate',function($post){
+        ->addColumn('calculate',function(){
             return rand(5,20)+rand(50,100);
         })
         ->addColumn('action',function(Post $post){
