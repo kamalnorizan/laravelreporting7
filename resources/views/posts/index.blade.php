@@ -191,9 +191,11 @@
                 }else{
                     $('.errorTxt').empty();
                     $('#errorMessages').empty();
+                    $('.form-control').removeClass('is-invalid');
                     $.each(response.error, function (indexInArray, message) {
                         $('#errorMessages').append(message+'<br>');
                         $('#'+indexInArray+'Help').text(message);
+                        $('#'+indexInArray).addClass('is-invalid');
                     });
 
                     $('#errorDiv').removeClass('d-none');

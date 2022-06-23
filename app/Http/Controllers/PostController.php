@@ -121,6 +121,8 @@ class PostController extends Controller
             'content' => 'required',
             'featured' => 'required',
             'published' => 'required'
+        ],[
+            'title.required' => 'Sila masukkan tajuk'
         ]);
 
         if($validator->passes()){
