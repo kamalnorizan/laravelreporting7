@@ -57,11 +57,12 @@
                     <div class="form-group">
                       <label for="title">Title</label>
                       <input type="text" class="form-control" name="title" id="title" aria-describedby="helpId" placeholder="">
-                      <small id="helpId" class="form-text text-muted"></small>
+                      <small id="titleHelp" class="form-text errorTxt text-danger"></small>
                     </div>
                     <div class="form-group">
                       <label for="content">Content</label>
                       <textarea class="form-control" name="content" id="content" rows="3"></textarea>
+                      <small id="contentHelp" class="form-text errorTxt text-danger"></small>
                     </div>
                     <div class="form-group">
                       <label for="featured">Featured?</label>
@@ -163,15 +164,20 @@
             success: function (response) {
                 if($.isEmptyObject(response.error)){
 
+                    $('.errorTxt').empty();
                     $('#errorDiv').addClass('d-none');
                     $('#createForm').get(0).reset();
                     $('#createPostMdl').modal('hide');
                     poststbl.ajax.reload();
                     $('.modal-backdrop').remove();
                 }else{
+                    $('.errorTxt').empty();
+                    $('#errorMessages').empty();
                     $.each(response.error, function (indexInArray, message) {
                         $('#errorMessages').append(message+'<br>');
+                        $('#'+indexInArray+'Help').text(message);
                     });
+
                     $('#errorDiv').removeClass('d-none');
                     // console.log(response.error);
                 }

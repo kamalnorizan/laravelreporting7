@@ -131,7 +131,7 @@ class PostController extends Controller
             $post->save();
             return response()->json($request);
         }else{
-            return response()->json(['error'=>$validator->errors()->all()]);
+            return response()->json(['error'=>$validator->errors()]);
         }
 
     }
