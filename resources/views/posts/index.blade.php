@@ -121,10 +121,11 @@
 <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/jszip-2.5.0/dt-1.12.1/b-2.2.3/b-colvis-2.2.3/b-html5-2.2.3/b-print-2.2.3/r-2.3.0/datatables.min.js"></script>
 <script>
     var poststbl = $('#poststbl').DataTable({
-        dom: 'Bfrtip',
+        dom: 'Blfrtip',
         buttons: [
             'excel','pdf','print'
         ],
+        lengthMenu:[[10,25,50,-1],[10,25,50,"All"]],
         'order': [[3,'desc']],
         'processing': true,
         'serverSide': true,

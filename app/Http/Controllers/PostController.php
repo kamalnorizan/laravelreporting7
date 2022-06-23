@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Post;
+use App\User;
 use Illuminate\Http\Request;
 use DataTables;
 use DB;
@@ -138,6 +139,12 @@ class PostController extends Controller
             return response()->json(['error'=>$validator->errors()]);
         }
 
+    }
+
+    public function lesen()
+    {
+        $users = User::limit(10)->get();
+        return view('surat.lesen',compact('users'));
     }
 
     /**
