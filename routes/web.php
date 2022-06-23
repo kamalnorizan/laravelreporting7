@@ -13,6 +13,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+// DB::listen(function ($event) {
+//     dump($event->sql);
+// });
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -22,4 +26,4 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/post', 'PostController@index')->name('post.index');
-Route::post('/post/ajaxLoadPostTable', 'PostController@ajaxLoadPostTable')->name('post.ajaxLoadPostTable');
+Route::post('/post/ajaxLoadPostTable', 'PostController@ajaxLoadPostTableEL')->name('post.ajaxLoadPostTable');

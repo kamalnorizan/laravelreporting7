@@ -11,8 +11,10 @@
                    <table id="poststbl" class="table">
                     <thead>
                         <tr>
-                            <th>Bil</th>
-                            <th>Title</th>
+                            <th width="15%">Bil</th>
+                            <th width="15%">Title</th>
+                            <th>Comment</th>
+                            <th>Calculate</th>
                             <th>Author</th>
                             <th>Date</th>
                             <th>Action</th>
@@ -30,6 +32,7 @@
                         @endforeach --}}
                     </tbody>
                    </table>
+
                 </div>
             </div>
         </div>
@@ -66,25 +69,6 @@
         $('#dataid').html(id);
     });
 
-
-    // $('#poststbl').DataTable({
-    //     "processing": true,
-    //     "serverSide": true,
-    //     "ajax":{
-    //       "url": "{{ route('post.ajaxLoadPostTable') }}",
-    //       "dataType": "json",
-    //       "method": "post",
-    //       "data":{ _token: "{{csrf_token()}}"}
-    //     },
-    //     "columns": [
-    //       { "bil": "bil" },
-    //       { "title": "title" },
-    //       { "author": "author" },
-    //       { "created_at": "created_at" },
-    //       { "action": "action" }
-    //     ]
-    // });
-
     $('#poststbl').DataTable({
         'order': [[3,'desc']],
         'processing': true,
@@ -103,7 +87,9 @@
                 'searchable':false
             },
             {"data":'title'},
-            {"data":'name', 'name': 'user.name'},
+            {"data":'comment','searchable':false},
+            {"data":'calculate','searchable':false},
+            {"data":'name', 'name': 'users.name'},
             {"data":'created_at'},
             {"data":'action'}
         ]

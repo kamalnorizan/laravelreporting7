@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Post;
 use Illuminate\Http\Request;
 use DataTables;
+use DB;
 class PostController extends Controller
 {
     /**
@@ -14,11 +15,10 @@ class PostController extends Controller
      */
     public function index()
     {
-        // $posts = Post::all();
         return view('posts.index');
     }
 
-    public function ajaxLoadPostTable(Request $reqeust)
+    public function ajaxLoadPostTableEL(Request $reqeust)
     {
         $posts = Post::with('user');
 
@@ -27,15 +27,65 @@ class PostController extends Controller
         ->addColumn('name',function(Post $post){
             return $post->user->name;
         })
-        // ->addColumn('bil',function(Post $post){
-        //     return 'bil';
-        // })
+        ->addColumn('comment',function($post){
+            $commentRow = '';
+            foreach ($post->comments as $key => $comment) {
+                $commentRow.='<option >'.$comment->content.'</option>';
+            }
+            $columnComment = '<div class="form-group">';
+            $columnComment ='<select class="form-control">';
+            $columnComment .=$commentRow;
+            $columnComment .='</select>';
+            $columnComment .='</div>';
+            return  $columnComment;
+        })
+        ->addColumn('calculate',function($post){
+            return rand(5,20)+rand(50,100);
+        })
         ->addColumn('action',function(Post $post){
             $button = "<button type='button' class='btn btn-sm btn-warning'  data-toggle='modal' data-id='".$post->id."' data-target='#updatePostMdl'>Update</button> ";
             $button .= "<button type='button' class='btn btn-sm btn-primary'>Show</button>";
             return $button;
         })
+        ->rawColumns(['comment','action'])
         ->make(true);
+    }
+
+    public function ajaxLoadPostTableQB(Request $reqeust)
+    {
+        // $posts = Post::with('user','comments');
+        $posts = DB::table('posts')
+        ->select('posts.id','title','posts.created_at','users.name','content')
+        ->join('users','users.id','posts.user_id');
+
+        return Datatables::queryBuilder($posts)
+        ->addIndexColumn()
+        ->addColumn('name',function($post){
+            return $post->name;
+        })
+        ->addColumn('calculate',function($post){
+            return rand(5,20)+rand(50,100);
+        })
+        ->addColumn('comment',function($post){
+            // $commentRow = '';
+            // foreach ($post->comments as $key => $comment) {
+            //     $commentRow.='<option >'.$comment->content.'</option>';
+            // }
+            // $columnComment = '<div class="form-group">';
+            // $columnComment ='<select class="form-control">';
+            // $columnComment .=$commentRow;
+            // $columnComment .='</select>';
+            // $columnComment .='</div>';
+            return  '$columnComment';
+        })
+        ->addColumn('action',function($post){
+            $button = "<button type='button' class='btn btn-sm btn-warning'  data-toggle='modal' data-id='".$post->id."' data-target='#updatePostMdl'>Update</button> ";
+            $button .= "<button type='button' class='btn btn-sm btn-primary'>Show</button>";
+            return $button;
+        })
+        ->rawColumns(['comment','action'])
+        // ->make(true);
+        ->toJson();
     }
     /**
      * Show the form for creating a new resource.
