@@ -191,4 +191,23 @@ class PostController extends Controller
     {
         //
     }
+
+    public function report($size, $perpage)
+    {
+        $total = $size;
+        if($size=='all'){
+            $posts = Post::all();
+        }else{
+            $posts = Post::limit($size)->get();
+        }
+        $postsSplit = $posts->chunk($perpage);
+
+        // $balance = 150%20;
+        // $postsLast = $posts->take(-1*$balance)->split(1);
+        // $postsToSplit = $posts->take(150-$balance);
+        // $postsSplit = $postsSplit->combine($postsLast);
+        // dd($postsSplit);
+
+        return view('posts.report',compact('posts','postsSplit','perpage'));
+    }
 }

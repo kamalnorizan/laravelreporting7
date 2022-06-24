@@ -28,4 +28,5 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/post', 'PostController@index')->name('post.index')->middleware('auth');
 Route::post('/post/ajaxLoadPostTable', 'PostController@ajaxLoadPostTableEL')->name('post.ajaxLoadPostTable');
 Route::post('/post/store', 'PostController@store')->name('post.store');
+Route::get('/post/report/{size}/{perpage}', 'PostController@report')->name('post.report');
 Route::get('/surat/lesen','PostController@lesen')->name('post.lesen');
