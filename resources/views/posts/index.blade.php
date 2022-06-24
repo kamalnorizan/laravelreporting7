@@ -9,6 +9,27 @@
     <div class="row justify-content-center">
         <div class="col-md-12">
             <div class="card">
+                <div class="card-header">Print Filter</div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                            <label for="totalRows">Total Rows</label>
+                            <input type="number" value="200" class="form-control" name="totalRows" id="totalRows" aria-describedby="helpId" placeholder="">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                            <label for="rowsPerPage">Rows Per Page</label>
+                            <input type="number" value="10" class="form-control" name="rowsPerPage" id="rowsPerPage" aria-describedby="helpId" placeholder="">
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+            <div class="card mt-3">
                 <div class="card-header">Senarai Post <button type="button" class="btn btn-primary btn-sm float-right" data-toggle="modal" data-target="#createPostMdl">
                     Create Post
                   </button> <button type="button" id="refreshTable" class="btn btn-info btn-sm float-right" >
@@ -114,6 +135,7 @@
         </div>
     </div>
 </div>
+
 @endsection
 @section('script')
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
@@ -123,7 +145,32 @@
     var poststbl = $('#poststbl').DataTable({
         dom: 'Blfrtip',
         buttons: [
-            'excel','pdf','print'
+            'excel','pdf',{
+                text: 'Print',
+                action: function(e, dt, node, config){
+                    var ids='';
+                    $.each(dt.data(), function (indexInArray, row) {
+                        ids = ids+'|'+row.id
+                    });
+                    var url = 'http://laravelreporting7.test/post/reportDataTable';
+                    var totalRows = $('#totalRows').val();
+                    var rowsPerPage = $('#rowsPerPage').val();
+                    var form = $("<form target='_blank' method='POST' style='display:none'></form>").attr({
+                        action: url
+                    }).appendTo(document.body);
+
+                    var inputId = $('<input type="text" class="form-control" name="ids" id="" >').val(ids);
+                    var inputToken = $('<input type="text" class="form-control" name="_token" id="" >').val('{{ csrf_token() }}');
+
+                    $(inputId).appendTo(form);
+                    $(inputToken).appendTo(form);
+                    form.submit();
+                    form.remove();
+                    // console.log(inputId);
+                    // window.open('http://laravelreporting7.test/post/report/'+totalRows+'/'+rowsPerPage);
+                    // window.open('http://laravelreporting7.test/post/reportDataTable/'+ids);
+                }
+            }
         ],
         lengthMenu:[[10,25,50,-1],[10,25,50,"All"]],
         'order': [[3,'desc']],

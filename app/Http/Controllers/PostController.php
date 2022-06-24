@@ -196,9 +196,9 @@ class PostController extends Controller
     {
         $total = $size;
         if($size=='all'){
-            $posts = Post::all();
+            $posts = Post::orderBy('created_at','desc')->get();
         }else{
-            $posts = Post::limit($size)->get();
+            $posts = Post::limit($size)->orderBy('created_at','desc')->get();
         }
         $postsSplit = $posts->chunk($perpage);
 
@@ -209,5 +209,16 @@ class PostController extends Controller
         // dd($postsSplit);
 
         return view('posts.report',compact('posts','postsSplit','perpage'));
+    }
+
+    public function reportDataTable(Request $request)
+    {
+        $ids = $request->ids;
+        $collect = explode('|',$ids);
+        $collect = array_slice($collect,1,sizeof($collect));
+        $posts = Post::whereIn('id',$collect)->get();
+
+        return view('surat.lesen2',compact('posts'));
+        # code...
     }
 }
