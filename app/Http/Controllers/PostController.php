@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Post;
+use App\Appointment;
 use App\User;
 use Illuminate\Http\Request;
 use DataTables;
@@ -220,5 +221,55 @@ class PostController extends Controller
 
         return view('surat.lesen2',compact('posts'));
         # code...
+    }
+
+    public function loadChartDashboard(Request $request)
+    {
+        $data['label']=["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"];
+
+        $appointments = Appointment::selectRaw("category, day, count(*) as total")
+                                        ->groupBy('category')
+                                        ->groupBy('day')
+                                        ->orderBy('category','asc')
+                                        ->orderBy('day','asc')
+                                        ->get();
+        $data['Appointment']=[40, 60, 80, 60, 75, 60, 70];
+        $data['Fulfilled']=[70, 75, 90, 60, 80, 75, 65];
+        $data['Booked']=[60, 65, 80, 62, 90, 80, 70];
+        $data['Arrived']=[42, 45, 65, 40, 42, 63, 35];
+        $data['NoShow']=[50, 55, 70, 40, 47, 65, 38];
+        $data['Reschedule']=[40, 40, 45, 45, 45, 40, 45];
+
+        foreach ($appointments as $key => $appointment) {
+            switch ($appointment->day) {
+                case 'MON':
+                    $data[str_replace(' ','',$appointment->category)][0]=$appointment->total;
+                    break;
+                case 'TUE':
+                    $data[str_replace(' ','',$appointment->category)][1]=$appointment->total;
+                    break;
+                case 'WED':
+                    $data[str_replace(' ','',$appointment->category)][2]=$appointment->total;
+                    break;
+                case 'THU':
+                    $data[str_replace(' ','',$appointment->category)][3]=$appointment->total;
+                    break;
+                case 'FRI':
+                    $data[str_replace(' ','',$appointment->category)][4]=$appointment->total;
+                    break;
+                case 'SAT':
+                    $data[str_replace(' ','',$appointment->category)][5]=$appointment->total;
+                    break;
+                case 'SUN':
+                    $data[str_replace(' ','',$appointment->category)][6]=$appointment->total;
+                    break;
+
+            }
+
+        }
+
+        // dd($data);
+
+        return response()->json($data);
     }
 }

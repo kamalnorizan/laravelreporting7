@@ -31,3 +31,4 @@ Route::post('/post/store', 'PostController@store')->name('post.store');
 Route::get('/post/report/{size}/{perpage}', 'PostController@report')->name('post.report');
 Route::post('/post/reportDataTable', 'PostController@reportDataTable')->name('post.reportDataTable');
 Route::get('/surat/lesen','PostController@lesen')->name('post.lesen');
+Route::post('/post/loadChartDashboard','PostController@loadChartDashboard')->name('post.loadChartDashboard');
